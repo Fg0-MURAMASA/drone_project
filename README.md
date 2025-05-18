@@ -2,7 +2,6 @@
 
 旁听完成综设四周无人机课程使用的github仓库
 
-![image-20230927214301617](D:/PROject/drone/ad/参考/README.assets/image-20230927214301617.png)
 
 ### 阶段一
 
