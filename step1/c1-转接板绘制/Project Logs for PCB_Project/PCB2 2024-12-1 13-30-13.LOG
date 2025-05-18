@@ -1,0 +1,4 @@
+Change Component Comment : Designator=* Old Comment=CN1 New Comment=
+Change Component Designator: OldDesignator=* NewDesignator=CN1
+Add Pin To Net: Unknown Pin: Pin CN1-1
+Add Pin To Net: Unknown Pin: Pin CN1-2

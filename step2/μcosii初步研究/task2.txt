@@ -1,0 +1,251 @@
+# 任务2: 文件布局和startup文件
+
+## map文件
+
+在连接时, 我们生成了map文件, map文件是干什么的呢?
+
+点开map文件,可以看到它由这几个部分组成
+
+- Section Cross References
+
+  ![img](file:///C:\user\default\AppData\Local\Temp\QQ_1742460622556.png)
+
+- Image Symbol Table
+
+  ![img](file:///C:\user\default\AppData\Local\Temp\QQ_1742460656550.png)
+
+- Memory Map of the image
+
+  ![img](file:///C:\user\default\AppData\Local\Temp\QQ_1742460681457.png)
+
+每个部分都由大量的数据组成, 我们详细看看这些数据是在干啥?
+
+1. **Section Cross References（交叉引用）**
+
+   - 展示函数/变量在不同模块间的调用关系
+
+   ```c
+   os_core.o(.text.OS_Sched) refers to os_cpu_a.o(.text) for OS_CPU_SR_Save
+   // os_core模块中引用了os_cpu_a模块中的OS_CPU_SR_Save函数
+   ```
+
+2. **Removing Unused Sections（未使用代码移除）**
+
+   - 显示被优化掉的未使用代码段及其节省的空间
+
+   ```c
+   Removing os_core.o(.text.OS_EventTaskRemoveMulti), (118 bytes).
+   //移除了os_core模块中的.text.OS_EventTaskRemoveMulti函数(占用118字节)
+   ```
+
+3. **Image Symbol Table（符号表）**
+
+   - 局部符号表(Local Symbols)：显示模块内部符号信息
+
+     ![img](file:///C:\user\default\AppData\Local\Temp\QQ_1742461269765.png)
+
+     > Symbol Name：符号名称
+     > Value：存储对应的地址
+     > Ov Type：符号对应的类型 （Number、Section、Thumb Code、Data等）
+     > Size：存储大小
+     > Object(Section)：段目标，即所在模块（源文件）
+
+   - 全局符号表(Global Symbols)：展示所有全局变量和函数的地址、类型、大小
+
+4. **Memory Map of the image ( 内存（映射）分布)**'
+
+   - **直观展示程序在物理内存中的分布**
+     描述代码段（RO）、数据段（RW）、堆栈（ZI）等各部分在Flash和RAM中的具体地址范围和占用空间。
+   - **验证链接脚本（.sct文件）的正确性**
+     确认内存分配是否符合预期设计（如是否溢出、区域是否重叠）。
+
+   - ![img](file:///C:\user\default\AppData\Local\Temp\QQ_1742461508051.png)
+
+     > Image Entry point ： 指映射入口地址，如果自己重构了start文件，会出现Not specified
+     >
+     > Execution Region：执行区域
+     >
+     > Loading Region：加载区域
+     >
+     > Base Addr：存储地址
+     > Size：存储大小
+     > Type：类型（有Data,Code,Zero,PAD等）
+     > Attr：属性
+     > Section Name：段名
+     > Object：目标
+
+5. **Image component sizes (存储组成大小)**
+
+   - **统计各模块对内存的贡献比例**
+     展示每个目标文件（.o）和库文件（.a）占用的代码、数据空间。
+   - **识别内存消耗热点**
+     帮助优化占用空间较大的模块。
+
+   ![img](file:///C:\user\default\AppData\Local\Temp\QQ_1742461736303.png)
+
+这篇文档是关于STM32嵌入式开发的进阶教程，主要讲解如何通过分析.map和.sct文件理解程序内存布局，以及如何自定义启动文件（startup file）。以下是核心知识点的详细教学：
+
+## .sct文件（分散加载文件）
+
+.sct文件: 是ARM编译工具链（如Keil MDK、IAR等）中用于**精细化控制程序内存布局**的核心配置文件。其作用远不止简单的内存分配，而是通过**显式指定代码和数据的物理存储位置**，实现复杂的嵌入式系统内存管理需求.
+
+- **多存储器管理**：当芯片具有多块物理内存（如内部Flash、外部QSPI Flash、DTCM RAM、SRAM等）时，指定不同代码/数据的存储位置。
+- **地址重映射**：例如将中断向量表从默认Flash地址重定向到RAM（用于动态更新中断服务程序）。
+- **分块加载**：将非核心代码（如Bootloader、OTA固件）分配到独立存储区域。
+
+一个完整的.sct文件由**加载域（Load Region）**和**执行域（Execution Region）**构成，采用类似层叠的语法结构(下面是项目中的.sct文件实例):
+
+```c
+LR_IROM1 0x08000000 0x00010000  {    ;加载区域大小
+//加载域名  起始地址 大小{
+  ER_IROM1 0x08000000 0x00010000  {  ;执行地址
+    //运行域名 起始地址 大小
+   *.o (RESET, +First)
+    //中断向量表起始地址， +First表示中断向量表放置到首地址
+   *(InRoot$$Sections)
+    //ARM相关库，InRoot$$Sections即ARM库的链接器标号，主要作用COPY RW区到RAM，
+   .ANY (+RO)
+    // 编译文件RO(read only) 在该区域
+   .ANY (+XO)
+     // 编译文件EO(execute only) 在该区域
+  }
+  RW_IRAM1 0x20000000 0x00005000  {  ; RW data
+  // 运行内存名字 起始地址 大小
+   .ANY (+RW +ZI) //编译静态区(可读可写)
+  }
+}
+```
+
+> - `+RO`：代码和只读数据（Read-Only）
+> - `+RW`：可读写数据（Read-Write）
+> - `+ZI`：零初始化数据（Zero-Initialized）
+> - `+First`/`+Last`：强制段位置
+> - `UNINIT`：保留未初始化内存（如堆栈保护区） 
+
+## 重写start文件
+
+start文件（如`startup_stm32f4xx.s`）是嵌入式程序的入口，负责：
+
+- **初始化硬件环境**：设置栈指针、堆空间、中断向量表等
+- **引导程序执行**：从复位向量跳转到`main()`函数
+- **支持操作系统**：为RTOS提供基础运行环境（如FreeRTOS的任务堆栈管理）
+
+若要自己移植系统, 我们就得具备重写start文件的能力
+
+栈空间分配 -> 堆空间分配 -> 中断向量表配置 -> Handler函数的编写
+
+#### 栈空间分配
+
+```assembly
+Stack_Size      EQU     0x400   ; 定义栈大小为1KB
+                AREA    STACK, NOINIT, READWRITE, ALIGN=3
+Stack_Mem       SPACE   Stack_Size
+__initial_sp    ; 栈顶指针初始化
+```
+
+- 栈用于存储函数调用时的局部变量、返回地址等
+- 在操作系统中，每个任务会有独立的任务栈（与start文件中的主栈区分）
+- 栈溢出会导致不可预测行为，需通过`.map`文件验证分配是否充足
+
+#### 堆空间分配
+
+```assembly
+Heap_Size       EQU     0x200   ; 定义堆大小为512B
+                AREA    HEAP, NOINIT, READWRITE, ALIGN=3
+__heap_base
+Heap_Mem        SPACE   Heap_Size
+__heap_limit
+```
+
+- 堆用于动态内存分配（如`malloc`）
+- RTOS（如FreeRTOS）通常使用自定义内存管理（如`pvPortMalloc`），此时可减小堆大小
+- 通过`_sbrk`函数实现堆内存管理（需在syscalls.c中实现）
+
+#### 中断向量表配置
+
+```assembly
+; 中断向量表示例
+g_pfnVectors:
+  .word   _initial_sp              ; 栈顶地址
+  .word   Reset_Handler            ; 复位处理
+  .word   NMI_Handler              ; NMI中断
+  ...
+  .word   CAN1_TX_Handler          ; CAN发送中断（需与手册对应）
+```
+
+> 我们在使用某个STM32产品的时候，不能够只看手册，还要对照官方的start文件的中断向量表中有没有对应的中断向量
+
+#### 修改Reset_Handler
+
+```assembly
+; Reset handler
+Reset_Handler    PROC
+                 EXPORT  Reset_Handler             [WEAK]
+     IMPORT  __main
+     IMPORT  SystemInit
+                 LDR     R0, =SystemInit
+                 BLX     R0
+                 LDR     R0, =__main
+                 BX      R0
+                 ENDP
+```
+
+```assembly
+Reset_Handler   PROC
+    EXPORT  Reset_Handler   [WEAK]
+    ;修改后的Reset_Handler函数加入了mymain和myScratterLoad两个自定义函数
+    IMPORT  mymain
+    IMPORT SystemInit
+    IMPORT myScratterLoad
+    
+    LDR     R0, =SystemInit
+    BLX     R0
+    LDR     R0, =myScratterLoad
+    BLX     R0
+    
+    BL      mymain                      ;跳转去执行main函数
+    B       .                           ;原地跳转，即处于循环状态
+    ENDP
+    ALIGN                               ;填充字节使地址对齐
+```
+
+#### ScratterLoad函数重写
+
+#### ScatterLoad函数的核心功能
+
+ScatterLoad（分散加载）是ARM链接器在启动阶段调用的关键函数，主要实现：
+
+- **数据段搬运**：将`.data`段（初始化数据）从Flash复制到RAM
+- **ZI(zero init)段清零**：对`.bss`段（未初始化数据）进行零初始化
+- **自定义内存布局**：支持非连续内存区域的加载（如将代码段分配到外部QSPI Flash）
+
+```
+Reset_Handler
+    │
+    ├─→ 初始化栈指针（SP = _estack）
+    │
+    ├─→ 调用SystemInit（时钟/Flash配置）
+    │
+    └─→ 进入ScatterLoad流程
+           │
+           ├─阶段1：定位加载域
+           │   ├─从链接脚本获取LOAD_REGION地址
+           │   └─解析.sct文件中的LR_IROM1定义
+           │
+           ├─阶段2：数据搬运
+           │   ├─.data段：从Flash到RAM的逐字拷贝
+           │   │   (使用_etext, _sdata, _edata符号)
+           │   │
+           │   └─.bss段：RAM清零操作
+           │       (使用_sbss, _ebss符号)
+           │
+           ├─阶段3：硬件加速处理
+           │   ├─若使能DMA：配置DMA2进行大数据块传输
+           │   └─若使能CRC：计算校验值并验证
+           │
+           └─阶段4：跳转执行
+               └─调用__rt_entry进入C运行时环境
+```
+
+该函数主要执行的是将数据拷贝到它该去的地方, 我们自己写一个ScatterLoad
+

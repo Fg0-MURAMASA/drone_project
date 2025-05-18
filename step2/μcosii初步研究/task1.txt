@@ -1,0 +1,321 @@
+```c
+#ifndef OS_CPU_H //if not def:防止头文件的重复定义
+#define OS_CPU_H
+
+//定义类型别名, 比如以后可以用 BOOLEAN is_busy; 替换 unsigned char is_busy;由于我们找的的source文件中使用了这种别名, 所以我们得单独定义好
+typedef unsigned char BOOLEAN;
+typedef unsigned char INT8U;
+typedef signed char INT8S;
+typedef unsigned short INT16U;
+typedef signed short INT16S;
+typedef unsigned int INT32U;
+typedef signed int INT32S;
+typedef float FP32;
+typedef double FP64;
+typedef unsigned int OS_STK;
+typedef unsigned int OS_CPU_SR;
+
+//宏定义: 定义OS_CRITICAL_METHOD为常量3u（u 表示无符号整数）
+#define         OS_CRITICAL_METHOD 3u
+//条件编译, 同上
+#if                 OS_CRITICAL_METHOD ==3u
+//临界区保护的方法3:
+//先定义了两个函数用于保存和取出进入临界区前的状态
+OS_CPU_SR OS_CPU_SR_Save(void);
+void OS_CPU_SR_Restore(OS_CPU_SR cpu_sr);
+
+//调用 OS_CPU_SR_Save() 保存中断状态并关中断。
+//将返回的状态存入变量 cpu_sr（需提前声明，如 OS_CPU_SR cpu_sr;）
+#define         OS_ENTER_CRITICAL()    { cpu_sr = OS_CPU_SR_Save(); } 
+//调用 OS_CPU_SR_Restore()，将 cpu_sr 中保存的状态恢复
+#define         OS_EXIT_CRITICAL()     { OS_CPU_SR_Restore(cpu_sr); }
+#endif
+
+//宏定义: OS_TASK_SW() 是一个宏，实际调用 OSCtxSw() 函数
+#define                OS_TASK_SW() OSCtxSw()
+//定义堆栈增长方向, 1=向下增长（高地址→低地址）
+#define                OS_STK_GROWTH        1u
+
+//关于任务切换, 现在好像只有空函数, 只待以后补全
+void                OSCtxSw(void);// 上下文切换函数（由汇编实现）
+void                OSIntCtxSw(void);// 中断退出时的上下文切换
+void                OSStartHighRdy(void); // 启动最高优先级任务
+#endif
+
+```
+
+os_cfg.h是uC/OSII的配置文件，通过配置该文件，可以表示哪些功能可用，哪些功能不可用。所以, 我们还需要补全os_cfg里面的配置定义:
+
+```c
+#ifndef OS_CFG_H
+#define OS_CFG_H
+/* ---------------------- MISCELLANEOUS ----------------------- */
+#define OS_APP_HOOKS_EN           1u   /* Application-defined hooks are 
+called from the uC/OS-II hooks */
+#define OS_ARG_CHK_EN             1u   /* Enable (1) or Disable (0) argument 
+checking                  */
+#define OS_CPU_HOOKS_EN           1u   /* uC/OS-II hooks are found in the 
+processor port files         */
+#define OS_DEBUG_EN               0u   /* Enable(1) debug variables           
+                         */
+#define OS_EVENT_MULTI_EN         1u   /* Include code for OSEventPendMulti() 
+                         */
+#define OS_EVENT_NAME_EN          1u   /* Enable names for Sem, Mutex, Mbox 
+and Q                      */
+#define OS_LOWEST_PRIO           63u   /* Defines the lowest priority that 
+can be assigned ...         */
+                                       /* ... MUST NEVER be higher than 254!  
+                         */
+#define OS_MAX_EVENTS            10u   /* Max. number of event control blocks 
+in your application      */
+#define OS_MAX_FLAGS              5u   /* Max. number of Event Flag Groups    
+in your application      */
+#define OS_MAX_MEM_PART           5u   /* Max. number of memory partitions    
+                         */
+#define OS_MAX_QS                 4u   /* Max. number of queue control blocks 
+in your application      */
+#define OS_MAX_TASKS             20u   /* Max. number of tasks in your 
+application, MUST be >= 2       */
+#define OS_SCHED_LOCK_EN          1u   /* Include code for OSSchedLock() and OSSchedUnlock()           */
+
+#define OS_TICK_STEP_EN           1u   /* Enable tick stepping feature for 
+uC/OS-View                  */
+#define OS_TICKS_PER_SEC        100u   /* Set the number of ticks in one 
+second                        */
+#define OS_TLS_TBL_SIZE           0u   /* Size of Thread-Local Storage Table  
+                         */
+/* --------------------- TASK STACK SIZE ---------------------- */
+#define OS_TASK_TMR_STK_SIZE    128u   /* Timer      task stack size (# of 
+OS_STK wide entries)        */
+#define OS_TASK_STAT_STK_SIZE   128u   /* Statistics task stack size (# of 
+OS_STK wide entries)        */
+#define OS_TASK_IDLE_STK_SIZE   128u   /* Idle       task stack size (# of 
+OS_STK wide entries)        */
+/* --------------------- TASK MANAGEMENT ---------------------- */
+#define OS_TASK_CHANGE_PRIO_EN    1u   /*     Include code for 
+OSTaskChangePrio()                      */
+#define OS_TASK_CREATE_EN         1u   /*     Include code for OSTaskCreate() 
+                         */
+#define OS_TASK_CREATE_EXT_EN     1u   /*     Include code for 
+OSTaskCreateExt()                       */
+#define OS_TASK_DEL_EN            1u   /*     Include code for OSTaskDel()    
+                         */
+#define OS_TASK_NAME_EN           1u   /*     Enable task names               
+                         */
+#define OS_TASK_PROFILE_EN        1u   /*     Include variables in OS_TCB for 
+profiling                */
+#define OS_TASK_QUERY_EN          1u   /*     Include code for OSTaskQuery()  
+                         */
+#define OS_TASK_REG_TBL_SIZE      1u   /*     Size of task variables array 
+(#of INT32U entries)        */
+#define OS_TASK_STAT_EN           1u   /*     Enable (1) or Disable(0) the 
+statistics task             */
+#define OS_TASK_STAT_STK_CHK_EN   1u   /*     Check task stacks from 
+statistic task                    */
+#define OS_TASK_SUSPEND_EN        1u   /*     Include code for 
+OSTaskSuspend() and OSTaskResume()      */
+#define OS_TASK_SW_HOOK_EN        1u   /*     Include code for OSTaskSwHook() 
+                         */
+/* ----------------------- EVENT FLAGS ------------------------ */
+#define OS_FLAG_EN                1u   /* Enable (1) or Disable (0) code 
+generation for EVENT FLAGS    */
+#define OS_FLAG_ACCEPT_EN         1u   /*     Include code for OSFlagAccept() 
+                         */
+#define OS_FLAG_DEL_EN            1u   /*     Include code for OSFlagDel()    
+                         */
+#define OS_FLAG_NAME_EN           1u   /*     Enable names for event flag 
+group                        */
+#define OS_FLAG_QUERY_EN          1u   /*     Include code for OSFlagQuery()  
+                         */
+#define OS_FLAG_WAIT_CLR_EN       1u   /* Include code for Wait on Clear 
+EVENT FLAGS                   */
+#define OS_FLAGS_NBITS           16u   /* Size in #bits of OS_FLAGS data type 
+(8, 16 or 32)            */
+/* -------------------- MESSAGE MAILBOXES --------------------- */
+#define OS_MBOX_EN                1u   /* Enable (1) or Disable (0) code 
+generation for MAILBOXES      */
+#define OS_MBOX_ACCEPT_EN         1u   /*     Include code for OSMboxAccept() 
+                         */
+#define OS_MBOX_DEL_EN            1u   /*     Include code for OSMboxDel()    
+                         */
+#define OS_MBOX_PEND_ABORT_EN     1u   /*     Include code for 
+OSMboxPendAbort()                       */
+#define OS_MBOX_POST_EN           1u   /*     Include code for OSMboxPost()   
+                         */
+#define OS_MBOX_POST_OPT_EN       1u   /*     Include code for 
+OSMboxPostOpt()                         */
+#define OS_MBOX_QUERY_EN          1u   /*     Include code for OSMboxQuery()  
+                         */
+/* --------------------- MEMORY MANAGEMENT -------------------- */
+#define OS_MEM_EN                 1u   /* Enable (1) or Disable (0) code 
+generation for MEMORY MANAGER */
+#define OS_MEM_NAME_EN            1u   /*     Enable memory partition names   
+                         */
+#define OS_MEM_QUERY_EN           1u   /*     Include code for OSMemQuery()   
+                         */
+/* ---------------- MUTUAL EXCLUSION SEMAPHORES --------------- */
+#define OS_MUTEX_EN               1u   /* Enable (1) or Disable (0) code 
+generation for MUTEX          */
+#define OS_MUTEX_ACCEPT_EN        1u   /*     Include code for 
+OSMutexAccept()                         */
+#define OS_MUTEX_DEL_EN           1u   /*     Include code for OSMutexDel()   
+                         */
+#define OS_MUTEX_QUERY_EN         1u   /*     Include code for OSMutexQuery() 
+                         */
+/* ---------------------- MESSAGE QUEUES ---------------------- */
+#define OS_Q_EN                   1u   /* Enable (1) or Disable (0) code 
+generation for QUEUES         */
+#define OS_Q_ACCEPT_EN            1u   /*     Include code for OSQAccept()    
+                         */
+#define OS_Q_DEL_EN               1u   /*     Include code for OSQDel()       
+                         */
+#define OS_Q_FLUSH_EN             1u   /*     Include code for OSQFlush()     
+                         */
+#define OS_Q_PEND_ABORT_EN        1u   /*     Include code for OSQPendAbort() 
+                         */
+#define OS_Q_POST_EN              1u   /*     Include code for OSQPost()      
+                         */
+#define OS_Q_POST_FRONT_EN        1u   /*     Include code for OSQPostFront() 
+                         */
+#define OS_Q_POST_OPT_EN          1u   /*     Include code for OSQPostOpt()   
+                         */
+#define OS_Q_QUERY_EN             1u   /*     Include code for OSQQuery()     
+                         */
+/* ------------------------ SEMAPHORES ------------------------ */
+#define OS_SEM_EN                 1u   /* Enable (1) or Disable (0) code 
+generation for SEMAPHORES     */
+#define OS_SEM_ACCEPT_EN          1u   /*    Include code for OSSemAccept()   
+                         */
+#define OS_SEM_DEL_EN             1u   /*    Include code for OSSemDel()      
+                         */
+#define OS_SEM_PEND_ABORT_EN      1u   /*    Include code for 
+OSSemPendAbort()                         */
+#define OS_SEM_QUERY_EN           1u   /*    Include code for OSSemQuery()    
+                         */
+#define OS_SEM_SET_EN             1u   /*    Include code for OSSemSet()      
+                         */
+/* --------------------- TIME MANAGEMENT ---------------------- */
+#define OS_TIME_DLY_HMSM_EN       1u   /*     Include code for 
+OSTimeDlyHMSM()                         */
+#define OS_TIME_DLY_RESUME_EN     1u   /*     Include code for 
+OSTimeDlyResume()                       */
+#define OS_TIME_GET_SET_EN        1u   /*     Include code for OSTimeGet() 
+and OSTimeSet()             */
+#define OS_TIME_TICK_HOOK_EN      1u   /*     Include code for 
+OSTimeTickHook()                        */
+/* --------------------- TIMER MANAGEMENT --------------------- */
+#define OS_TMR_EN                 0u   /* Enable (1) or Disable (0) code 
+generation for TIMERS         */
+#define OS_TMR_CFG_MAX           16u   /*     Maximum number of timers        
+                         */
+#define OS_TMR_CFG_NAME_EN        1u   /*     Determine timer names           
+                         */
+#define OS_TMR_CFG_WHEEL_SIZE     7u   /*     Size of timer wheel (#Spokes)   
+                         */
+#define OS_TMR_CFG_TICKS_PER_SEC 10u   /*     Rate at which timer management 
+task runs (Hz)            */
+/* ---------------------- TRACE RECORDER ---------------------- */
+#define OS_TRACE_EN               0u   /* Enable (1) or Disable (0) uC/OS-II 
+Trace instrumentation     */
+#define OS_TRACE_API_ENTER_EN     0u   /* Enable (1) or Disable (0) uC/OS-II 
+Trace API enter instrum.  */
+#define OS_TRACE_API_EXIT_EN      0u   /* Enable (1) or Disable (0) uC/OS-II 
+Trace API exit  instrum.  */
+#endif
+```
+
+补全钩子函数: 我们需要新建一个os_cpu_c.c文件和一个os_cpu_a.s文件，在其中补充缺少的函数实现
+
+钩子函数是操作系统预留的 **扩展点**，允许用户在特定事件发生时插入自定义代码。所有钩子函数默认为空，需要开发者按需实现。
+
+```c
+//在os_cpu_c.c文件中，我们定义空的系统初始化函数、钩子函数、cpu异常栈基地址和设置内核可用的优先级边界。
+#include "os_cpu.h"
+// 系统初始化函数，通常用于设置硬件相关的设置 
+void SystemInit(){}
+// 定义空的钩子函数 
+void OSInitHookBegin(){} // 操作系统初始化开始时的钩子
+void OSInitHookEnd(){} // 操作系统初始化结束时的钩子
+void OSTCBInitHook(){}  // 任务控制块初始化钩子
+void OSTaskCreateHook(){} // 任务创建时的钩子
+void OSTaskIdleHook(){} // 空闲任务钩子
+void OSTaskReturnHook(){} // 任务返回钩子（任务函数意外返回时触发）
+void OSTaskSwHook(){} // 任务切换时的钩子
+void OSTimeTickHook(){}
+void OSTaskStatHook(){}
+void OSTaskDelHook(){}
+        
+// 任务堆栈初始化函数，为新任务分配堆栈空间 
+OS_STK *OSTaskStkInit(void (*task)(void *p_arg), void *p_arg, OS_STK *ptos, 
+INT16U opt){
+return ptos;
+}
+// 定义一个空的CPU异常栈基地址 
+void OS_CPU_ExceptStkBase(){}
+// 设置内核可用的优先级边界 
+void OS_KA_BASEPRI_Boundary(){}
+```
+
+os_cpu_a.s汇编语言实现函数:
+在os_cpu_a.s文件中，实现的是与处理器相关的函数,这一部分的函数涉及CPU特权寄存器的访问、寄存器状态的保存与恢复，以及任务上下文切换。
+这些操作需要对CPU体系结构和指令集进行精确控制，而高级语言（如C）无法不提供直接读写特定硬件寄存器（如中断寄存器PRIMASK、堆栈PSP、任务控制块TCB）的机制，也难以确保任务切换的精确性和高效性。
+
+```
+	EXPORT OS_CPU_SR_Save
+    EXPORT OS_CPU_SR_Restore
+    EXPORT OSCtxSw
+    EXPORT OSIntCtxSw
+    EXPORT OSStartHighRdy
+    EXPORT OS_CPU_PendSVHandler
+    
+    AREA    |.text|, CODE, READONLY, ALIGN=2
+    THUMB
+    REQUIRE8
+    PRESERVE8
+    
+    
+    ; 保存中断状态并关中断
+OS_CPU_SR_Save PROC
+    MRS   R0, PRIMASK      ; 读取PRIMASK/BASEPRI（中断状态寄存器）并存入R0
+    CPSID I                ; 关闭中断
+    BX    LR               ; 返回
+    ENDP
+    
+   ; 恢复中断状态
+OS_CPU_SR_Restore PROC
+    MSR   PRIMASK, R0      ; 将R0的值写回PRIMASK/BASEPRI寄存器
+    BX    LR
+    ENDP
+    ; 任务上下文切换，此处为空实现，仅供通过编译。以后需要实现任务上下文切换代码。
+OSCtxSw PROC    
+    BX LR
+    ENDP
+    ; 中断级任务切换，空实现
+OSIntCtxSw PROC
+    BX LR
+    ENDP
+    ; 启动最高优先级任务，空实现，实际需要初始化任务堆栈并启动第一个任务   
+OSStartHighRdy PROC
+    BX LR
+    ENDP
+    ; PendSV 中断处理，空实现，实际应实现PendSV中断处理以完成任务切换   
+OS_CPU_PendSVHandler PROC
+    BX LR
+    ENDP
+    END
+```
+
+补全main函数:
+
+```c
+#include "ucos_ii.h"
+int main()
+{
+        while(1)
+        {
+        }
+}
+
+```
+
+若有空, 补全此笔记的编译流程部分和任务创建流程部分

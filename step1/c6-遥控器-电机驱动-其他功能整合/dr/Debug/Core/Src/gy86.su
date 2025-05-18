@@ -1,0 +1,5 @@
+../Core/Src/gy86.c:38:6:HMC5883L_Init	24	static
+../Core/Src/gy86.c:43:6:HMC5883L_ReadData	48	static
+../Core/Src/gy86.c:58:6:MPU6050_Init	24	static
+../Core/Src/gy86.c:70:6:MPU6050_GetData_old	48	static
+../Core/Src/gy86.c:99:6:MPU6050_GetData	56	static

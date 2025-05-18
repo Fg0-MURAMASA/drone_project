@@ -1,0 +1,9 @@
+Change Component Designator: OldDesignator=P3 NewDesignator=GY-86
+Change Component Designator: OldDesignator=P4 NewDesignator=bluetooth
+Change Component Designator: OldDesignator=P5 NewDesignator=USART
+Change Component Designator: OldDesignator=P6 NewDesignator=motor1
+Change Component Designator: OldDesignator=P7 NewDesignator=motor2
+Change Component Designator: OldDesignator=P8 NewDesignator=motor3
+Change Component Designator: OldDesignator=P9 NewDesignator=motor4
+Change Component Designator: OldDesignator=P10 NewDesignator=OLED
+Change Component Designator: OldDesignator=P11 NewDesignator=receiver

@@ -1,0 +1,83 @@
+Dependencies for Project 'test', Target 'Target 1': (DO NOT MODIFY !)
+CompilerVersion: 6180000::V6.18::ARMCLANG
+F (.\Source\os_core.c)(0x63B71465)(-xc -std=c90 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Weverything -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ./Source -I ./Ports -I ./Cfg -I ./Core-ID:/AAAdownload/Keil5/Pack/Keil/STM32F1xx_DFP/2.4.0/Device/Include-D__UVISION_VERSION="537" -DSTM32F10X_MD-o ./objects/os_core.o -MD)
+I (Core\ucos_ii.h)(0x63B71465)
+I (Cfg\app_cfg.h)(0x67CD0536)
+I (Cfg\os_cfg.h)(0x67CD0FA2)
+I (Ports\os_cpu.h)(0x67CD0DF3)
+I (Source\os_trace.h)(0x63B71465)
+F (.\Source\os_dbg_r.c)(0x63B71465)(-xc -std=c90 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Weverything -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ./Source -I ./Ports -I ./Cfg -I ./Core-ID:/AAAdownload/Keil5/Pack/Keil/STM32F1xx_DFP/2.4.0/Device/Include-D__UVISION_VERSION="537" -DSTM32F10X_MD-o ./objects/os_dbg_r.o -MD)
+I (Core\ucos_ii.h)(0x63B71465)
+I (Cfg\app_cfg.h)(0x67CD0536)
+I (Cfg\os_cfg.h)(0x67CD0FA2)
+I (Ports\os_cpu.h)(0x67CD0DF3)
+I (Source\os_trace.h)(0x63B71465)
+F (.\Source\os_flag.c)(0x63B71465)(-xc -std=c90 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Weverything -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ./Source -I ./Ports -I ./Cfg -I ./Core-ID:/AAAdownload/Keil5/Pack/Keil/STM32F1xx_DFP/2.4.0/Device/Include-D__UVISION_VERSION="537" -DSTM32F10X_MD-o ./objects/os_flag.o -MD)
+I (Core\ucos_ii.h)(0x63B71465)
+I (Cfg\app_cfg.h)(0x67CD0536)
+I (Cfg\os_cfg.h)(0x67CD0FA2)
+I (Ports\os_cpu.h)(0x67CD0DF3)
+I (Source\os_trace.h)(0x63B71465)
+F (.\Source\os_mbox.c)(0x63B71465)(-xc -std=c90 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Weverything -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ./Source -I ./Ports -I ./Cfg -I ./Core-ID:/AAAdownload/Keil5/Pack/Keil/STM32F1xx_DFP/2.4.0/Device/Include-D__UVISION_VERSION="537" -DSTM32F10X_MD-o ./objects/os_mbox.o -MD)
+I (Core\ucos_ii.h)(0x63B71465)
+I (Cfg\app_cfg.h)(0x67CD0536)
+I (Cfg\os_cfg.h)(0x67CD0FA2)
+I (Ports\os_cpu.h)(0x67CD0DF3)
+I (Source\os_trace.h)(0x63B71465)
+F (.\Source\os_mem.c)(0x63B71465)(-xc -std=c90 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Weverything -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ./Source -I ./Ports -I ./Cfg -I ./Core-ID:/AAAdownload/Keil5/Pack/Keil/STM32F1xx_DFP/2.4.0/Device/Include-D__UVISION_VERSION="537" -DSTM32F10X_MD-o ./objects/os_mem.o -MD)
+I (Core\ucos_ii.h)(0x63B71465)
+I (Cfg\app_cfg.h)(0x67CD0536)
+I (Cfg\os_cfg.h)(0x67CD0FA2)
+I (Ports\os_cpu.h)(0x67CD0DF3)
+I (Source\os_trace.h)(0x63B71465)
+F (.\Source\os_mutex.c)(0x63B71465)(-xc -std=c90 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Weverything -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ./Source -I ./Ports -I ./Cfg -I ./Core-ID:/AAAdownload/Keil5/Pack/Keil/STM32F1xx_DFP/2.4.0/Device/Include-D__UVISION_VERSION="537" -DSTM32F10X_MD-o ./objects/os_mutex.o -MD)
+I (Core\ucos_ii.h)(0x63B71465)
+I (Cfg\app_cfg.h)(0x67CD0536)
+I (Cfg\os_cfg.h)(0x67CD0FA2)
+I (Ports\os_cpu.h)(0x67CD0DF3)
+I (Source\os_trace.h)(0x63B71465)
+F (.\Source\os_q.c)(0x63B71465)(-xc -std=c90 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Weverything -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ./Source -I ./Ports -I ./Cfg -I ./Core-ID:/AAAdownload/Keil5/Pack/Keil/STM32F1xx_DFP/2.4.0/Device/Include-D__UVISION_VERSION="537" -DSTM32F10X_MD-o ./objects/os_q.o -MD)
+I (Core\ucos_ii.h)(0x63B71465)
+I (Cfg\app_cfg.h)(0x67CD0536)
+I (Cfg\os_cfg.h)(0x67CD0FA2)
+I (Ports\os_cpu.h)(0x67CD0DF3)
+I (Source\os_trace.h)(0x63B71465)
+F (.\Source\os_sem.c)(0x63B71465)(-xc -std=c90 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Weverything -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ./Source -I ./Ports -I ./Cfg -I ./Core-ID:/AAAdownload/Keil5/Pack/Keil/STM32F1xx_DFP/2.4.0/Device/Include-D__UVISION_VERSION="537" -DSTM32F10X_MD-o ./objects/os_sem.o -MD)
+I (Core\ucos_ii.h)(0x63B71465)
+I (Cfg\app_cfg.h)(0x67CD0536)
+I (Cfg\os_cfg.h)(0x67CD0FA2)
+I (Ports\os_cpu.h)(0x67CD0DF3)
+I (Source\os_trace.h)(0x63B71465)
+F (.\Source\os_task.c)(0x63B71465)(-xc -std=c90 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Weverything -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ./Source -I ./Ports -I ./Cfg -I ./Core-ID:/AAAdownload/Keil5/Pack/Keil/STM32F1xx_DFP/2.4.0/Device/Include-D__UVISION_VERSION="537" -DSTM32F10X_MD-o ./objects/os_task.o -MD)
+I (Core\ucos_ii.h)(0x63B71465)
+I (Cfg\app_cfg.h)(0x67CD0536)
+I (Cfg\os_cfg.h)(0x67CD0FA2)
+I (Ports\os_cpu.h)(0x67CD0DF3)
+I (Source\os_trace.h)(0x63B71465)
+F (.\Source\os_time.c)(0x63B71465)(-xc -std=c90 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Weverything -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ./Source -I ./Ports -I ./Cfg -I ./Core-ID:/AAAdownload/Keil5/Pack/Keil/STM32F1xx_DFP/2.4.0/Device/Include-D__UVISION_VERSION="537" -DSTM32F10X_MD-o ./objects/os_time.o -MD)
+I (Core\ucos_ii.h)(0x63B71465)
+I (Cfg\app_cfg.h)(0x67CD0536)
+I (Cfg\os_cfg.h)(0x67CD0FA2)
+I (Ports\os_cpu.h)(0x67CD0DF3)
+I (Source\os_trace.h)(0x63B71465)
+F (.\Source\os_tmr.c)(0x63B71465)(-xc -std=c90 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Weverything -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ./Source -I ./Ports -I ./Cfg -I ./Core-ID:/AAAdownload/Keil5/Pack/Keil/STM32F1xx_DFP/2.4.0/Device/Include-D__UVISION_VERSION="537" -DSTM32F10X_MD-o ./objects/os_tmr.o -MD)
+I (Core\ucos_ii.h)(0x63B71465)
+I (Cfg\app_cfg.h)(0x67CD0536)
+I (Cfg\os_cfg.h)(0x67CD0FA2)
+I (Ports\os_cpu.h)(0x67CD0DF3)
+I (Source\os_trace.h)(0x63B71465)
+F (.\Ports\os_cpu.h)(0x67CD0DF3)()
+F (.\Ports\os_cpu_a.s)(0x67CD1CC5)(--target=arm-arm-none-eabi -mcpu=cortex-m3 -masm=auto -c-gdwarf-4 -I ./Cfg -I ./Source -I ./Ports -I ./Core-ID:/AAAdownload/Keil5/Pack/Keil/STM32F1xx_DFP/2.4.0/Device/Include-Wa,armasm,--pd,"__UVISION_VERSION SETA 537" -Wa,armasm,--pd,"STM32F10X_MD SETA 1"-o ./objects/os_cpu_a.o)
+F (.\Ports\os_cpu_c.c)(0x67CD1DCC)(-xc -std=c90 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Weverything -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ./Source -I ./Ports -I ./Cfg -I ./Core-ID:/AAAdownload/Keil5/Pack/Keil/STM32F1xx_DFP/2.4.0/Device/Include-D__UVISION_VERSION="537" -DSTM32F10X_MD-o ./objects/os_cpu_c.o -MD)
+I (Ports\os_cpu.h)(0x67CD0DF3)
+F (.\Cfg\app_cfg.h)(0x67CD0536)()
+F (.\Cfg\os_cfg.h)(0x67CD0FA2)()
+F (.\Start\startup_stm32f10x_md.s)(0x65471853)(--target=arm-arm-none-eabi -mcpu=cortex-m3 -masm=auto -c-gdwarf-4 -I ./Cfg -I ./Source -I ./Ports -I ./Core-ID:/AAAdownload/Keil5/Pack/Keil/STM32F1xx_DFP/2.4.0/Device/Include-Wa,armasm,--pd,"__UVISION_VERSION SETA 537" -Wa,armasm,--pd,"STM32F10X_MD SETA 1"-o ./objects/startup_stm32f10x_md.o)
+F (.\Core\ucos_ii.h)(0x63B71465)()
+F (.\User\main.c)(0x67CD1DF4)(-xc -std=c90 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Weverything -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ./Source -I ./Ports -I ./Cfg -I ./Core-ID:/AAAdownload/Keil5/Pack/Keil/STM32F1xx_DFP/2.4.0/Device/Include-D__UVISION_VERSION="537" -DSTM32F10X_MD-o ./objects/main.o -MD)
+I (Core\ucos_ii.h)(0x63B71465)
+I (Cfg\app_cfg.h)(0x67CD0536)
+I (Cfg\os_cfg.h)(0x67CD0FA2)
+I (Ports\os_cpu.h)(0x67CD0DF3)
+I (Source\os_trace.h)(0x63B71465)
+F (.\Listings\test.map)(0x67CD1DF6)()

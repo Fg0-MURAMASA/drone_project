@@ -1,0 +1,5 @@
+../Core/Src/gy86.c:38:6:HMC5883L_Init	1
+../Core/Src/gy86.c:43:6:HMC5883L_ReadData	1
+../Core/Src/gy86.c:58:6:MPU6050_Init	1
+../Core/Src/gy86.c:70:6:MPU6050_GetData_old	1
+../Core/Src/gy86.c:99:6:MPU6050_GetData	1

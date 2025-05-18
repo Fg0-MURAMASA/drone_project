@@ -1,0 +1,6 @@
+Removed Pin From Net: NetName=USART2_TX Pin=BLUE1-4
+Removed Pin From Net: NetName=GND Pin=BLUE1-5
+Removed Pin From Net: NetName=3V3_2 Pin=BLUE1-6
+Added Pin To Net: NetName=USART2_TX Pin=BLUE1-2
+Added Pin To Net: NetName=GND Pin=BLUE1-4
+Added Pin To Net: NetName=5V Pin=BLUE1-5
